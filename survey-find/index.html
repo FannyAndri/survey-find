@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurveyFind</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .hidden { display: none; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { padding: 10px 15px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="title-container">
+    <h1>Survey Find</h1>
+    <p>Welcome to Survey Find, helps you to find your respondents</p>
+</div>
+
+<div id="register" class="form-container">
+    <h2>Register</h2>
+    <div class="form-group">
+        <label for="reg-username">Username:</label>
+        <input type="text" id="reg-username">
+    </div>
+    <div class="form-group">
+        <label for="reg-email">Email:</label>
+        <input type="email" id="reg-email">
+    </div>
+    <div class="form-group">
+        <label for="reg-password">Password:</label>
+        <input type="password" id="reg-password">
+    </div>
+    <button onclick="register()">Register</button>
+</div>
+
+<div id="login" class="form-container hidden">
+    <h2>Login</h2>
+    <div class="form-group">
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username">
+    </div>
+    <div class="form-group">
+        <label for="login-email">Email:</label>
+        <input type="email" id="login-email">
+    </div>
+    <div class="form-group">
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password">
+    </div>
+    <div class="form-group">
+        <label>Role:</label>
+        <select id="role">
+            <option value="responder">Responden</option>
+            <option value="finder">Pencari Responden</option>
+        </select>
+    </div>
+    <button onclick="login()">Login</button>
+    <button onclick="goBackToRegister()">Kembali</button>
+</div>
+
+<div id="finder" class="form-container hidden">
+    <h2>Pencari Responden</h2>
+    <div class="form-group">
+        <label for="survey-title">Judul Kuisioner:</label>
+        <input type="text" id="survey-title">
+    </div>
+    <div class="form-group">
+        <label for="survey-description">Deskripsi:</label>
+        <input type="text" id="survey-description">
+    </div>
+    <div class="form-group">
+        <label for="survey-link">Tautan Kuisioner:</label>
+        <input type="text" id="survey-link">
+    </div>
+    <div class="form-group">
+        <label for="survey-reward">Imbalan:</label>
+        <input type="text" id="survey-reward">
+    </div>
+    <div class="form-group">
+        <label for="survey-respondents">Jumlah Responden yang Dibutuhkan:</label>
+        <input type="number" id="survey-respondents">
+    </div>    
+    <button onclick="goToPayment()">Pembayaran</button>
+    <button onclick="viewMySurveys()">Kuisioner Saya</button>
+    <button onclick="goBackToLogin()">Kembali</button>
+</div>
+
+<div id="my-surveys" class="form-container hidden">
+    <h2>Kuisioner Saya</h2>
+    <div id="surveys-list"></div>
+    <button onclick="goBackToFinder()">Kembali</button>
+</div>
+<div id="payment" class="form-container hidden">
+    <h2>Pembayaran Kuisioner</h2>
+    <p>Total yang harus dibayarkan:</p>
+    <p id="payment-amount">0</p>
+    <div class="form-group">
+        <label>Pilih Metode Pembayaran:</label>
+        <div>
+            <input type="radio" id="dana" name="payment-method" value="DANA">
+            <label for="dana">Transfer DANA</label>
+            <img src="C:/Users/fanny/survey-find/assets/DANA.png" alt="Logo DANA" style="width: 48px; height: 24px; margin-left: 10px;">
+        </div>
+        <div>
+            <input type="radio" id="ovo" name="payment-method" value="OVO">
+            <label for="ovo">Transfer OVO</label>
+            <img src="C:/Users/fanny/survey-find/assets/OVO.png" alt="Logo OVO" style="width: 24px; height: 24px; margin-left: 10px;">
+        </div>
+        <div>
+            <input type="radio" id="bri" name="payment-method" value="BRI">
+            <label for="bri">Transfer Bank BRI</label>
+            <img src="C:/Users/fanny/survey-find/assets/BRI.png" alt="Logo BRI" style="width: 24px; height: 24px; margin-left: 10px;">
+        </div>
+        <div>
+            <input type="radio" id="bca" name="payment-method" value="BCA">
+            <label for="bca">Transfer Bank BCA</label>
+            <img src="C:/Users/fanny/survey-find/assets/BCA.png" alt="Logo BCA" style="width: 48px; height: 48px; margin-left: 10px;">
+        </div>
+    </div>
+
+    <button onclick="uploadSurvey()">Upload Kuisioner</button>
+    <button onclick="goBackToFinder()">Kembali</button>
+</div>
+
+<div id="responder" class="form-container hidden">
+    <h2>Daftar Kuisioner</h2>
+    <div id="surveys"></div>
+    <button onclick="goToProfile()">Profile Saya</button>
+    <button onclick="goBackToLogin()">Kembali</button>
+    <a href="https://www.instagram.com/survey.find/profilecard/?igsh=MWJ4aWhvNzN4M251bA==" target="_blank" style="text-decoration: none;">
+        <button style="display: flex; align-items: center; padding: 10px 20px; background-color: #E4405F; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            <img src="C:/Users/fanny/survey-find/assets/Instagram.png" alt="Logo Instagram" style="width: 20px; height: 20px; margin-right: 10px;">
+                Testimoni: @survey.find
+        </button>
+    </a>
+
+</div>
+
+<div id="survey-filling" class="form-container hidden">
+    <h2>Pengisian Kuisioner</h2>
+    <div id="filling-details"></div>
+    <button onclick="goBackToResponder()">Kembali</button>
+    <button onclick="takeReward()">Ambil Reward</button>
+</div>
+
+ <div id="profile" class="form-container hidden">
+    <h2>Profil Saya</h2>
+    <p id="username-profile"></p>
+    <p id="email-profile"></p>
+    <p id="balance-profile">Saldo: 0</p>
+    <button onclick="goBackToResponder()">Kembali</button>
+    <button onclick="goToWithdrawal()">Tarik Saldo</button>
+</div>
+<div id="withdrawal" class="form-container hidden">
+    <h2>Penarikan Saldo</h2>
+    <p>Saldo Tersedia: <span id="available-balance"></span></p>
+    <div class="form-group">
+        <label for="withdraw-amount">Jumlah Penarikan:</label>
+        <input type="number" id="withdraw-amount">
+        <label>Pilih Metode Penarikan:</label>
+        <div>
+            <input type="radio" id="dana" name="payment-method" value="DANA">
+            <label for="dana">Transfer DANA</label>
+            <img src="C:/Users/fanny/survey-find/assets/DANA.png" alt="Logo DANA" style="width: 48px; height: 24px; margin-left: 10px;">
+        </div>
+        <div>
+            <input type="radio" id="ovo" name="payment-method" value="OVO">
+            <label for="ovo">Transfer OVO</label>
+            <img src="C:/Users/fanny/survey-find/assets/OVO.png" alt="Logo OVO" style="width: 24px; height: 24px; margin-left: 10px;">
+        </div>
+        <div>
+            <input type="radio" id="bri" name="payment-method" value="BRI">
+            <label for="bri">Transfer Bank BRI</label>
+            <img src="C:/Users/fanny/survey-find/assets/BRI.png" alt="Logo BRI" style="width: 24px; height: 24px; margin-left: 10px;">
+        </div>
+        <div>
+            <input type="radio" id="bca" name="payment-method" value="BCA">
+            <label for="bca">Transfer Bank BCA</label>
+            <img src="C:/Users/fanny/survey-find/assets/BCA.png" alt="Logo BCA" style="width: 48px; height: 48px; margin-left: 10px;">
+        </div>
+    </div>
+    <button onclick="withdrawBalance()">Tarik</button>
+    <button onclick="goBackToProfile()">Kembali</button>
+</div>
+
+<script >
+    let surveys = JSON.parse(localStorage.getItem('surveys')) || [];
+    let userData = JSON.parse(localStorage.getItem('userData')) || {};
+    let balance = 0;
+
+    function register() {
+    const username = document.getElementById('reg-username').value;
+    const email = document.getElementById('reg-email').value;
+    const password = document.getElementById('reg-password').value;
+
+    if (username && email && password) {
+        const userData = { username, email, password, balance: 0 };
+        localStorage.setItem('userData', JSON.stringify(userData));
+        
+        document.getElementById('reg-username').value = "";
+        document.getElementById('reg-email').value = "";
+        document.getElementById('reg-password').value = "";
+
+        document.getElementById('register').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+    }
+}
+
+function login() {
+    const username = document.getElementById('login-username').value;
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const role = document.getElementById('role').value;
+
+    if (username && email && password) {
+        const storedUserData = JSON.parse(localStorage.getItem('userData'));
+        if (storedUserData && storedUserData.username === username && storedUserData.email === email && storedUserData.password === password) {
+            userData = storedUserData;
+            localStorage.setItem('currentUser', JSON.stringify(userData)); 
+
+            // Kosongkan form login
+            document.getElementById('login-username').value = "";
+            document.getElementById('login-email').value = "";
+            document.getElementById('login-password').value = "";
+
+            // Arahkan ke halaman sesuai peran (responder atau finder)
+            if (role === 'responder') {
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('responder').classList.remove('hidden');
+            } else if (role === 'finder') {
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('finder').classList.remove('hidden');
+            }
+        } else {
+            alert('Username, email, atau password salah');
+        }
+    }
+}
+
+function uploadSurvey() {
+    const surveyTitle = document.getElementById('survey-title').value;
+    const surveyDescription = document.getElementById('survey-description').value;
+    const surveyLink = document.getElementById('survey-link').value;
+    const surveyReward = document.getElementById('survey-reward').value;
+
+    if (surveyTitle && surveyDescription && surveyLink && surveyReward) {
+        const surveyData = { surveyTitle, surveyDescription, surveyLink, surveyReward };
+        surveys.push(surveyData);
+        localStorage.setItem('surveys', JSON.stringify(surveys));
+        
+        // Kosongkan form upload
+        document.getElementById('survey-title').value = "";
+        document.getElementById('survey-description').value = "";
+        document.getElementById('survey-link').value = "";
+        document.getElementById('survey-reward').value = "";
+
+        // Tampilkan konfirmasi upload
+        alert('Kuisioner berhasil di-upload!');
+        displaySurveys();
+    }
+}
+
+function viewMySurveys() {
+    const surveys = JSON.parse(localStorage.getItem('surveys'));
+    const surveysList = document.getElementById('surveys-list');
+    surveysList.innerHTML = '';
+    surveys.forEach((survey) => {
+        surveysList.innerHTML += `<p>Judul Kuisioner: ${survey.surveyTitle}</p>`;
+        surveysList.innerHTML += `<p>Deskripsi: ${survey.surveyDescription}</p>`;
+        surveysList.innerHTML += `<p>Tautan Kuisioner: ${survey.surveyLink}</p>`;
+        surveysList.innerHTML += `<p>Imbalan: ${survey.surveyReward}</p>`;
+        surveysList.innerHTML += `<hr>`;
+    });
+    document.getElementById('finder').classList.add('hidden');
+    document.getElementById('my-surveys').classList.remove('hidden');
+}
+
+function displaySurveys() {
+    const surveysList = document.getElementById('surveys');
+    surveysList.innerHTML = '';
+    surveys.forEach((survey, index) => {
+        surveysList.innerHTML += `
+            <p>Judul Kuisioner: ${survey.surveyTitle}</p>
+            <p>Deskripsi: ${survey.surveyDescription}</p>
+            <p>Tautan Kuisioner: <a href="${survey.surveyLink}" target="_blank">${survey.surveyLink}</a></p>
+            <p>Imbalan: ${survey.surveyReward}</p>
+            <button onclick="selectSurvey(${index})">Pilih</button>
+            <hr>
+        `;
+    });
+}
+
+function selectSurvey(index) {
+    const selectedSurvey = surveys[index];
+    const fillingDetails = document.getElementById('filling-details');
+    
+    fillingDetails.innerHTML = `
+        <h2>${selectedSurvey.surveyTitle}</h2>
+        <p>Deskripsi: ${selectedSurvey.surveyDescription}</p>
+        <p>Tautan Kuisioner: <a href="${selectedSurvey.surveyLink}" target="_blank">${selectedSurvey.surveyLink}</a></p>
+        <p>Imbalan: ${selectedSurvey.surveyReward}</p>
+    `;
+    document.getElementById('responder').classList.add('hidden');
+    document.getElementById('survey-filling').classList.remove('hidden');
+}
+
+function takeReward() {
+    const reward = parseInt(prompt('Masukkan jumlah reward'));
+    if (reward) {
+        userData.balance += reward;
+        localStorage.setItem('userData', JSON.stringify(userData)); // Simpan saldo terbaru ke localStorage
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        currentUser.balance = userData.balance; // Perbarui saldo di currentUser
+        localStorage.setItem('currentUser', JSON.stringify(currentUser)); // Simpan currentUser yang diperbarui
+        
+        document.getElementById('balance-profile').innerHTML = `Saldo: Rp ${userData.balance.toLocaleString()}`;
+        alert('Reward berhasil diambil!');
+    }
+}
+
+function goToPayment() {
+    const surveyReward = parseFloat(document.getElementById('survey-reward').value);
+    const surveyRespondents = parseInt(document.getElementById('survey-respondents').value);
+    
+    if (surveyReward && surveyRespondents) {
+        const totalCost = surveyReward * surveyRespondents;
+        const adminFee = totalCost * 0.20;
+        const paymentAmount = totalCost + adminFee;
+
+        document.getElementById('payment-amount').innerText = `Rp ${paymentAmount.toLocaleString()}`;
+
+        document.getElementById('finder').classList.add('hidden');
+        document.getElementById('payment').classList.remove('hidden');
+    } else {
+        alert("Mohon lengkapi imbalan dan jumlah responden.");
+    }
+}
+
+
+function resetRegisterForm() {
+    document.getElementById('reg-username').value = "";
+    document.getElementById('reg-email').value = "";
+    document.getElementById('reg-password').value = "";
+}
+
+function resetLoginForm() {
+    document.getElementById('login-username').value = "";
+    document.getElementById('login-email').value = "";
+    document.getElementById('login-password').value = "";
+}
+
+function goToProfile() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        userData = currentUser; // Perbarui userData dengan data terbaru
+        document.getElementById('username-profile').innerHTML = `Username: ${currentUser.username}`;
+        document.getElementById('email-profile').innerHTML = `Email: ${currentUser.email}`;
+        document.getElementById('balance-profile').innerHTML = `Saldo: Rp ${currentUser.balance.toLocaleString()}`;
+    }
+    document.getElementById('responder').classList.add('hidden');
+    document.getElementById('profile').classList.remove('hidden');
+}
+
+function goBackToLogin() {
+    resetRegisterForm();
+    document.getElementById('finder').classList.add('hidden');
+    document.getElementById('responder').classList.add('hidden');
+    document.getElementById('my-surveys').classList.add('hidden');
+    document.getElementById('login').classList.remove('hidden');
+}
+
+function goBackToRegister() {
+    resetLoginForm();
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('register').classList.remove('hidden');
+}
+
+function goBackToFinder() {
+    document.getElementById('my-surveys').classList.add('hidden');
+    document.getElementById('payment').classList.add('hidden');
+    document.getElementById('finder').classList.remove('hidden');
+}
+
+function goBackToResponder() {
+    document.getElementById('survey-filling').classList.add('hidden'); 
+    document.getElementById('profile').classList.add('hidden'); 
+    document.getElementById('responder').classList.remove('hidden');
+}
+function goToWithdrawal() {
+    document.getElementById('available-balance').innerText = `Rp ${userData.balance.toLocaleString()}`;
+    document.getElementById('profile').classList.add('hidden');
+    document.getElementById('withdrawal').classList.remove('hidden');
+}
+
+function withdrawBalance() {
+    const withdrawAmount = parseFloat(document.getElementById('withdraw-amount').value);
+    
+    if (withdrawAmount && withdrawAmount <= userData.balance) {
+        userData.balance -= withdrawAmount;
+        localStorage.setItem('userData', JSON.stringify(userData));
+        
+        // Perbarui currentUser di localStorage untuk sinkronisasi
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        currentUser.balance = userData.balance;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        document.getElementById('balance-profile').innerText = `Saldo: Rp ${userData.balance.toLocaleString()}`;
+        alert("Penarikan berhasil!");
+
+        document.getElementById('withdraw-amount').value = "";
+
+        goBackToProfile();
+    } else {
+        alert("Saldo tidak mencukupi.");
+    }
+}
+
+function goBackToProfile() {
+    document.getElementById('withdrawal').classList.add('hidden');
+    document.getElementById('profile').classList.remove('hidden');
+}
+
+</script>
+</body>
+</html>
